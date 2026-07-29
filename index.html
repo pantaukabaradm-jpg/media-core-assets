@@ -2,22 +2,26 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>PantauKabar - Segera Hadir</title>
-    <meta name="description" content="PantauKabar akan segera hadir dengan berita dan informasi terupdate. Dapatkan pemberitahuan pertama saat kami meluncur!">
+    <meta name="description" content="PantauKabar akan segera hadir! Mainkan mini game seru sambil menunggu peluncuran kami.">
     
     <style>
-        /* CSS Reset & Variable Super Ringan */
+        /* CSS Reset & Variables */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
         :root {
             --accent-color: #e63946;
-            --bg-overlay: rgba(15, 23, 42, 0.82);
+            --accent-hover: #d62839;
+            --bg-overlay: rgba(15, 23, 42, 0.85);
             --text-light: #f8fafc;
             --text-muted: #94a3b8;
         }
@@ -30,18 +34,17 @@
             background: #0f172a url('https://images.pantaukabar.com/placeholder-bg.jpg') center/cover no-repeat fixed;
             color: var(--text-light);
             text-align: center;
-            padding: 1.5rem;
+            padding: 1rem;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* Dark Overlay untuk Legibilitas Teks */
+        /* Overlay Gelap untuk Pembacaan Jelas */
         body::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: var(--bg-overlay);
             backdrop-filter: blur(8px);
             z-index: 1;
@@ -52,7 +55,7 @@
             z-index: 2;
             max-width: 650px;
             width: 100%;
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 0.8s ease-in-out;
         }
 
         /* Badge Status */
@@ -67,16 +70,15 @@
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         /* Tipografi */
         h1 {
-            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 800;
             line-height: 1.2;
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
+            margin-bottom: 0.8rem;
         }
 
         h1 span {
@@ -84,9 +86,9 @@
         }
 
         p.subtitle {
-            font-size: clamp(1rem, 2.5vw, 1.15rem);
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
             color: var(--text-muted);
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             line-height: 1.6;
         }
 
@@ -94,60 +96,61 @@
         .countdown {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2.5rem;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
         }
 
         .time-box {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem 0.5rem;
+            padding: 0.8rem 0.4rem;
             border-radius: 12px;
         }
 
         .time-box .number {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: #fff;
             display: block;
         }
 
         .time-box .label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
         }
 
-        /* Form Langganan */
+        /* Action Buttons Area */
+        .action-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 480px;
+            margin: 0 auto 1.5rem;
+        }
+
         .subscribe-form {
             display: flex;
             gap: 0.5rem;
-            max-width: 480px;
-            margin: 0 auto 2rem;
         }
 
         .subscribe-form input[type="email"] {
             flex: 1;
-            padding: 0.9rem 1.2rem;
+            padding: 0.85rem 1rem;
             border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.08);
             color: #fff;
             font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .subscribe-form input[type="email"]::placeholder {
-            color: #64748b;
         }
 
         .subscribe-form input[type="email"]:focus {
             border-color: var(--accent-color);
         }
 
-        .subscribe-form button {
-            padding: 0.9rem 1.5rem;
+        .btn-main {
+            padding: 0.85rem 1.4rem;
             border-radius: 8px;
             border: none;
             background: var(--accent-color);
@@ -155,116 +158,341 @@
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: background 0.3s, transform 0.1s;
+            transition: transform 0.1s, background 0.2s;
             white-space: nowrap;
         }
 
-        .subscribe-form button:hover {
-            background: #d62839;
+        .btn-main:hover {
+            background: var(--accent-hover);
         }
 
-        .subscribe-form button:active {
-            transform: scale(0.98);
+        .btn-game {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .btn-game:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* Footer */
         footer {
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-top: 2rem;
+            margin-top: 1.5rem;
         }
 
-        /* Animasi Ringan */
+        /* --- GAME MODAL OVERLAY --- */
+        #game-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: #0f172a;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: crosshair;
+            overflow: hidden;
+        }
+
+        /* Papan Skor Game */
+        #game-ui {
+            position: absolute;
+            top: 20px;
+            display: flex;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            z-index: 1000;
+        }
+
+        .btn-close-game {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 0.9rem;
+        }
+
+        /* Nyamuk Game Element */
+        .mosquito {
+            position: absolute;
+            font-size: 3.5rem;
+            cursor: pointer;
+            animation: buzz 0.2s infinite alternate;
+            z-index: 999;
+        }
+
+        @keyframes buzz {
+            0% { transform: translate(0, 0) rotate(-5deg); }
+            100% { transform: translate(3px, 3px) rotate(5deg); }
+        }
+
+        .splat {
+            position: absolute;
+            font-size: 2.5rem;
+            pointer-events: none;
+            animation: fadeOut 0.5s forwards;
+            z-index: 998;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: scale(0.5); }
+            100% { opacity: 0; transform: scale(1.3); }
+        }
+
+        .game-modal {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            z-index: 1002;
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .hidden { display: none !important; }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsif Ponsel */
         @media (max-width: 480px) {
-            .subscribe-form {
-                flex-direction: column;
-            }
-            .countdown {
-                gap: 0.5rem;
-            }
-            .time-box {
-                padding: 0.75rem 0.25rem;
-            }
-            .time-box .number {
-                font-size: 1.4rem;
-            }
+            .subscribe-form { flex-direction: column; }
+            .countdown { gap: 0.4rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- CONTAINER LANDING PAGE -->
     <main class="container">
-        <!-- Badge -->
         <div class="badge">🚀 Segera Hadir</div>
-
-        <!-- Judul Utama -->
         <h1>Pantau Berita Terkini di <span>PantauKabar</span></h1>
-        
-        <!-- Subjudul -->
-        <p class="subtitle">Sajian informasi tepercaya, aktual, dan mendalam. Kami sedang mempersiapkan pengalaman terbaik untuk Anda.</p>
+        <p class="subtitle">Sajian informasi tepercaya, aktual, dan mendalam. Dapatkan notifikasi pertama saat kami resmi meluncur!</p>
 
-        <!-- Hitung Mundur (Countdown) -->
+        <!-- Hitung Mundur -->
         <div class="countdown">
-            <div class="time-box">
-                <span class="number" id="days">00</span>
-                <span class="label">Hari</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="hours">00</span>
-                <span class="label">Jam</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="minutes">00</span>
-                <span class="label">Menit</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="seconds">00</span>
-                <span class="label">Detik</span>
-            </div>
+            <div class="time-box"><span class="number" id="days">00</span><span class="label">Hari</span></div>
+            <div class="time-box"><span class="number" id="hours">00</span><span class="label">Jam</span></div>
+            <div class="time-box"><span class="number" id="minutes">00</span><span class="label">Menit</span></div>
+            <div class="time-box"><span class="number" id="seconds">00</span><span class="label">Detik</span></div>
         </div>
 
-        <!-- Form Notifikasi Email -->
-        <form class="subscribe-form" onsubmit="event.preventDefault(); alert('Terima kasih! Kami akan memberi tahu Anda saat peluncuran.');">
-            <input type="email" placeholder="Masukkan email Anda..." required>
-            <button type="submit">Beri Tahu Saya</button>
-        </form>
+        <!-- Area Form & Tombol Main Game -->
+        <div class="action-area">
+            <form class="subscribe-form" onsubmit="event.preventDefault(); alert('Terima kasih! Email Anda telah terdaftar.');">
+                <input type="email" placeholder="Masukkan email Anda..." required>
+                <button type="submit" class="btn-main">Beri Tahu Saya</button>
+            </form>
 
-        <!-- Footer -->
+            <!-- Tombol Pemicu Game -->
+            <button class="btn-main btn-game" onclick="openGame()">
+                🎮 Bosan Menunggu? Main Mini Game
+            </button>
+        </div>
+
         <footer>
             &copy; 2026 PantauKabar.com — All Rights Reserved.
         </footer>
     </main>
 
-    <!-- Script Countdown Super Ringan -->
-    <script>
-        // Tentukan tanggal peluncuran (Contoh: 30 Hari dari sekarang)
-        const targetDate = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
 
+    <!-- OVERLAY MINI GAME (Sembunyi secara default) -->
+    <div id="game-overlay" class="hidden">
+        <button class="btn-close-game" onclick="closeGame()">✖ Keluar Game</button>
+        
+        <div id="game-ui">
+            <div>🦟 Skor: <span id="game-score">0</span></div>
+            <div>⏳ Waktu: <span id="game-timer">20</span>s</div>
+        </div>
+
+        <!-- Dialog Awal Game -->
+        <div id="game-start-modal" class="game-modal">
+            <h2 style="margin-bottom: 10px;">🦟 Tepuk Nyamuk Nakal!</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Tepuk nyamuk sebanyak-banyaknya sebelum waktu habis!</p>
+            <button class="btn-main" onclick="startGame()">Mulai Main!</button>
+        </div>
+
+        <!-- Dialog Game Over -->
+        <div id="game-over-modal" class="game-modal hidden">
+            <h2 style="margin-bottom: 10px;">Waktu Habis! 👏</h2>
+            <p id="game-result-msg" style="color: var(--text-muted); margin-bottom: 20px;">Skor Kamu: 0</p>
+            <button class="btn-main" onclick="startGame()">Main Lagi 🔄</button>
+        </div>
+    </div>
+
+
+    <!-- SCRIPT LANDING PAGE & GAME -->
+    <script>
+        // 1. SCRIPT COUNTDOWN LANDING PAGE
+        const targetDate = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
         function updateCountdown() {
             const now = new Date().getTime();
-            const difference = targetDate - now;
-
-            if (difference > 0) {
-                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((difference % (1000 * 60)) / 1000);
-
-                document.getElementById('days').innerText = d < 10 ? '0' + d : d;
-                document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
-                document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
-                document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+            const diff = targetDate - now;
+            if (diff > 0) {
+                document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById('seconds').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
             }
         }
-
         setInterval(updateCountdown, 1000);
         updateCountdown();
+
+        // 2. SCRIPT MINI GAME
+        let score = 0;
+        let timeLeft = 20;
+        let timerInterval;
+        let isPlaying = false;
+
+        const overlay = document.getElementById('game-overlay');
+        const scoreEl = document.getElementById('game-score');
+        const timerEl = document.getElementById('game-timer');
+        const startModal = document.getElementById('game-start-modal');
+        const overModal = document.getElementById('game-over-modal');
+
+        // Sound Effect Generator (Web Audio API)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playPopSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function openGame() {
+            overlay.classList.remove('hidden');
+            startModal.classList.remove('hidden');
+            overModal.classList.add('hidden');
+        }
+
+        function closeGame() {
+            isPlaying = false;
+            clearInterval(timerInterval);
+            document.querySelectorAll('.mosquito').forEach(m => m.remove());
+            overlay.classList.add('hidden');
+        }
+
+        function startGame() {
+            score = 0;
+            timeLeft = 20;
+            isPlaying = true;
+            scoreEl.innerText = score;
+            timerEl.innerText = timeLeft;
+
+            startModal.classList.add('hidden');
+            overModal.classList.add('hidden');
+
+            document.querySelectorAll('.mosquito').forEach(m => m.remove());
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.innerText = timeLeft;
+                if (timeLeft <= 0) endGame();
+            }, 1000);
+
+            spawnMosquito();
+        }
+
+        function spawnMosquito() {
+            if (!isPlaying) return;
+
+            const mosquito = document.createElement('div');
+            mosquito.classList.add('mosquito');
+            const icons = ['🦟', '🪰', '🐝'];
+            mosquito.innerText = icons[Math.floor(Math.random() * icons.length)];
+
+            const maxX = window.innerWidth - 80;
+            const maxY = window.innerHeight - 100;
+            const posX = Math.max(20, Math.floor(Math.random() * maxX));
+            const posY = Math.max(80, Math.floor(Math.random() * maxY));
+
+            mosquito.style.left = posX + 'px';
+            mosquito.style.top = posY + 'px';
+
+            const slap = (e) => {
+                e.stopPropagation();
+                if (!isPlaying) return;
+
+                score += 10;
+                scoreEl.innerText = score;
+                playPopSound();
+
+                createSplat(posX, posY);
+                mosquito.remove();
+                
+                setTimeout(spawnMosquito, Math.random() * 200);
+            };
+
+            mosquito.addEventListener('mousedown', slap);
+            mosquito.addEventListener('touchstart', slap);
+
+            overlay.appendChild(mosquito);
+
+            setTimeout(() => {
+                if (mosquito.parentNode) {
+                    mosquito.remove();
+                    spawnMosquito();
+                }
+            }, 1200);
+        }
+
+        function createSplat(x, y) {
+            const splat = document.createElement('div');
+            splat.classList.add('splat');
+            const icons = ['💥', '👏', '✨'];
+            splat.innerText = icons[Math.floor(Math.random() * icons.length)];
+            splat.style.left = x + 'px';
+            splat.style.top = y + 'px';
+            overlay.appendChild(splat);
+            setTimeout(() => splat.remove(), 500);
+        }
+
+        function endGame() {
+            isPlaying = false;
+            clearInterval(timerInterval);
+            document.querySelectorAll('.mosquito').forEach(m => m.remove());
+
+            let msg = `Skor Kamu: <b>${score}</b><br>`;
+            if (score >= 180) msg += "Luar biasa! Tanganmu kilat sekali! ⚡";
+            else if (score >= 90) msg += "Bagus! Kamar kamu lumayan bersih 🏠";
+            else msg += "Yah, nyamuknya masih pada pesta 😜";
+
+            document.getElementById('game-result-msg').innerHTML = msg;
+            overModal.classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
