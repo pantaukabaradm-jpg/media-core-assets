@@ -6,6 +6,10 @@
     <title>PantauKabar - Segera Hadir</title>
     <meta name="description" content="PantauKabar akan segera hadir! Mainkan mini game seru sambil menunggu peluncuran kami.">
     
+    <!-- FAVICON INTEGRATION -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%230f172a'/><path d='M256 64 L384 112 V240 C384 328 328 408 256 448 C184 408 128 328 128 240 V112 Z' fill='%23e63946'/><path d='M216 160 H280 C315 160 340 180 340 212 C340 244 315 264 280 264 H248 V352 H216 V160 Z M248 190 V234 H278 C295 234 308 225 308 212 C308 199 295 190 278 190 Z' fill='%23ffffff'/><circle cx='278' cy='212' r='12' fill='%23e63946'/></svg>">
+    
     <style>
         /* CSS Reset & Variables */
         * {
@@ -39,7 +43,6 @@
             overflow-x: hidden;
         }
 
-        /* Overlay Gelap untuk Pembacaan Jelas */
         body::before {
             content: '';
             position: absolute;
@@ -58,7 +61,15 @@
             animation: fadeIn 0.8s ease-in-out;
         }
 
-        /* Badge Status */
+        /* Header Logo Section */
+        .brand-logo {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            display: block;
+            filter: drop-shadow(0 4px 12px rgba(230, 57, 70, 0.4));
+        }
+
         .badge {
             display: inline-block;
             padding: 0.4rem 1rem;
@@ -73,7 +84,6 @@
             margin-bottom: 1.2rem;
         }
 
-        /* Tipografi */
         h1 {
             font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 800;
@@ -92,7 +102,6 @@
             line-height: 1.6;
         }
 
-        /* Countdown Timer */
         .countdown {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -120,7 +129,6 @@
             text-transform: uppercase;
         }
 
-        /* Action Buttons Area */
         .action-area {
             display: flex;
             flex-direction: column;
@@ -181,14 +189,13 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Footer */
         footer {
             font-size: 0.85rem;
             color: var(--text-muted);
             margin-top: 1.5rem;
         }
 
-        /* --- GAME MODAL OVERLAY --- */
+        /* Game Overlay */
         #game-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -203,7 +210,6 @@
             overflow: hidden;
         }
 
-        /* Papan Skor Game */
         #game-ui {
             position: absolute;
             top: 20px;
@@ -233,7 +239,6 @@
             font-size: 0.9rem;
         }
 
-        /* Nyamuk Game Element */
         .mosquito {
             position: absolute;
             font-size: 3.5rem;
@@ -287,8 +292,15 @@
 </head>
 <body>
 
-    <!-- CONTAINER LANDING PAGE -->
     <main class="container">
+        <!-- Logo Brand Favicon di Atas Judul -->
+        <svg class="brand-logo" viewBox="0 0 512 512">
+            <rect width="512" height="512" rx="120" fill="#0f172a"/>
+            <path d="M256 64 L384 112 V240 C384 328 328 408 256 448 C184 408 128 328 128 240 V112 Z" fill="#e63946"/>
+            <path d="M216 160 H280 C315 160 340 180 340 212 C340 244 315 264 280 264 H248 V352 H216 V160 Z M248 190 V234 H278 C295 234 308 225 308 212 C308 199 295 190 278 190 Z" fill="#ffffff"/>
+            <circle cx="278" cy="212" r="12" fill="#e63946"/>
+        </svg>
+
         <div class="badge">🚀 Segera Hadir</div>
         <h1>Pantau Berita Terkini di <span>PantauKabar</span></h1>
         <p class="subtitle">Sajian informasi tepercaya, aktual, dan mendalam. Dapatkan notifikasi pertama saat kami resmi meluncur!</p>
@@ -301,14 +313,12 @@
             <div class="time-box"><span class="number" id="seconds">00</span><span class="label">Detik</span></div>
         </div>
 
-        <!-- Area Form & Tombol Main Game -->
         <div class="action-area">
             <form class="subscribe-form" onsubmit="event.preventDefault(); alert('Terima kasih! Email Anda telah terdaftar.');">
                 <input type="email" placeholder="Masukkan email Anda..." required>
                 <button type="submit" class="btn-main">Beri Tahu Saya</button>
             </form>
 
-            <!-- Tombol Pemicu Game -->
             <button class="btn-main btn-game" onclick="openGame()">
                 🎮 Bosan Menunggu? Main Mini Game
             </button>
@@ -319,8 +329,7 @@
         </footer>
     </main>
 
-
-    <!-- OVERLAY MINI GAME (Sembunyi secara default) -->
+    <!-- OVERLAY MINI GAME -->
     <div id="game-overlay" class="hidden">
         <button class="btn-close-game" onclick="closeGame()">✖ Keluar Game</button>
         
@@ -329,14 +338,12 @@
             <div>⏳ Waktu: <span id="game-timer">20</span>s</div>
         </div>
 
-        <!-- Dialog Awal Game -->
         <div id="game-start-modal" class="game-modal">
             <h2 style="margin-bottom: 10px;">🦟 Tepuk Nyamuk Nakal!</h2>
             <p style="color: var(--text-muted); margin-bottom: 20px;">Tepuk nyamuk sebanyak-banyaknya sebelum waktu habis!</p>
             <button class="btn-main" onclick="startGame()">Mulai Main!</button>
         </div>
 
-        <!-- Dialog Game Over -->
         <div id="game-over-modal" class="game-modal hidden">
             <h2 style="margin-bottom: 10px;">Waktu Habis! 👏</h2>
             <p id="game-result-msg" style="color: var(--text-muted); margin-bottom: 20px;">Skor Kamu: 0</p>
@@ -344,10 +351,9 @@
         </div>
     </div>
 
-
-    <!-- SCRIPT LANDING PAGE & GAME -->
+    <!-- SCRIPT -->
     <script>
-        // 1. SCRIPT COUNTDOWN LANDING PAGE
+        // Countdown Script
         const targetDate = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
         function updateCountdown() {
             const now = new Date().getTime();
@@ -362,7 +368,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // 2. SCRIPT MINI GAME
+        // Game Script
         let score = 0;
         let timeLeft = 20;
         let timerInterval;
@@ -374,7 +380,6 @@
         const startModal = document.getElementById('game-start-modal');
         const overModal = document.getElementById('game-over-modal');
 
-        // Sound Effect Generator (Web Audio API)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playPopSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
